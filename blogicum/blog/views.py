@@ -19,16 +19,15 @@ def published_recent_posts(category=None):
 
 
 def index(request):
-    template_name = 'blog/index.html'
     post_list = published_recent_posts()
     context = {
         'post_list': post_list[:RECENT_POSTS_LIMIT],
     }
+    template_name = 'blog/index.html'
     return render(request, template_name, context)
 
 
 def post_detail(request, id):
-    template_name = 'blog/detail.html'
     post_list = published_recent_posts()
     post = get_object_or_404(
         post_list,
@@ -37,11 +36,11 @@ def post_detail(request, id):
     context = {
         'post': post,
     }
+    template_name = 'blog/detail.html'
     return render(request, template_name, context)
 
 
 def category_posts(request, category_slug):
-    template_name = 'blog/category.html'
     category = get_object_or_404(
         Category,
         slug=category_slug,
@@ -52,4 +51,5 @@ def category_posts(request, category_slug):
         'category': category,
         'post_list': post_list
     }
+    template_name = 'blog/category.html'
     return render(request, template_name, context)
