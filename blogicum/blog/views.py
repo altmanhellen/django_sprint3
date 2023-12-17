@@ -7,12 +7,15 @@ from .models import Category, Post
 RECENT_POSTS_LIMIT = 5
 
 
-def published_recent_posts():
-    return Post.objects.filter(
+def published_recent_posts(category=None):
+    posts = Post.objects.filter(
         is_published=True,
         pub_date__lte=timezone.now(),
         category__is_published=True
     )
+    if category:
+        posts = posts.filter(category=category)
+    return posts
 
 
 def index(request):
@@ -44,7 +47,7 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    post_list = published_recent_posts()
+    post_list = published_recent_posts(category=category)
     context = {
         'category': category,
         'post_list': post_list
