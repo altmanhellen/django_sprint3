@@ -39,7 +39,7 @@ class Location(PublishedModel):
 
 
 class Post(PublishedModel):
-    title = models.CharField(max_length=256)
+    title = models.CharField(max_length=256, verbose_name='Название')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(verbose_name='Дата и время публикации',
                                     help_text=('Если установить дату и время '
@@ -49,7 +49,6 @@ class Post(PublishedModel):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                blank=False,
-                               null=False,
                                verbose_name='Автор публикации')
     location = models.ForeignKey(Location,
                                  on_delete=models.SET_NULL,
