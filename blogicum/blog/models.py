@@ -2,9 +2,15 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from core.models import PublishedModel
+from .querysets import FilteredQuerySet
 
 
 User = get_user_model()
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return FilteredQuerySet(self.model, using=self._db)
 
 
 class Category(PublishedModel):
@@ -59,11 +65,14 @@ class Post(PublishedModel):
                                  on_delete=models.SET_NULL,
                                  null=True,
                                  verbose_name='Категория')
+    objects = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ('-pub_date',)
+        default_related_name = 'posts'
 
     def __str__(self):
         return self.title
